@@ -34,6 +34,7 @@ public abstract class AbstractEntity {
     @PrePersist
     public void prePersist() {
         this.createDate = LocalDateTime.now();
+        this.isDeleted = false;
     }
 
     @PreUpdate

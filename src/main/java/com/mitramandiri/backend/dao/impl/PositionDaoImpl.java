@@ -34,11 +34,10 @@ public class PositionDaoImpl implements PositionDao {
 
         //create a query
         //using native Hibernate API
-        List<Position> positions = currentSession.createQuery("FROM positions", Position.class).getResultList();
-//
-//        //execute query and get result list
-//        List<Position> positions = query.getResultList();
-//        List<Position> positions =
+        Query<Position> query = currentSession.createQuery("FROM position", Position.class);
+
+        //execute query and get result list
+        List<Position> positions = query.getResultList();
 
         //return the results
         return positions;
