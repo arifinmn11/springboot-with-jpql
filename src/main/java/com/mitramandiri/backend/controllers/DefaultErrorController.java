@@ -13,4 +13,5 @@ public class DefaultErrorController implements ErrorController {
         throw new PathNotFoundException();
     }
 
+
 }

@@ -14,4 +14,6 @@ public interface PositionService {
 
     List<Position> findAllPosition();
 
+    Position findById(Integer id);
+
 }

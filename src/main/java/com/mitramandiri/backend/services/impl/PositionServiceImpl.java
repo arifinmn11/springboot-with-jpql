@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class PositionServiceImpl extends CommonServiceImpl<Position, Integer> implements PositionService {
+public class PositionServiceImpl implements PositionService {
 
 //    @Autowired
 //    PositionRepository repository;
@@ -25,9 +25,6 @@ public class PositionServiceImpl extends CommonServiceImpl<Position, Integer> im
     @Autowired
     PositionRepository positionRepository;
 
-    public PositionServiceImpl(JpaRepository<Position, Integer> repository) {
-        super(repository);
-    }
 
     @Override
     @Transactional
@@ -39,6 +36,11 @@ public class PositionServiceImpl extends CommonServiceImpl<Position, Integer> im
     @Transactional
     public List<Position> findAllPosition() {
         return positionRepository.findAllPosition();
+    }
+
+    @Override
+    public Position findById(Integer id) {
+        return positionDao.findById(id);
     }
 
 //
