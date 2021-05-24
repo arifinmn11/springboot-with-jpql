@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Employees extends AbstractEntity {
+public class Employee extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -28,7 +28,7 @@ public class Employees extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "position_id", referencedColumnName = "id")
-    private Positions positionId;
+    private Position positionId;
 
     @Column(nullable = false, name = "id_number")
     @NotNull
