@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class EmployeeRequest {
+public class EmployeeRequest extends PageSearch{
     private Integer id;
     @NotNull
     private String name;

@@ -14,7 +14,6 @@ public class PageList<T> {
     private Integer size;
     private Long total;
 
-
     public PageList(List<T> list, Integer page, Integer size, Long total) {
         this.list = list;
         this.page = page;

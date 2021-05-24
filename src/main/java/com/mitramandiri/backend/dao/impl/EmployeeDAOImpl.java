@@ -5,15 +5,18 @@ import com.mitramandiri.backend.dao.PositionDao;
 import com.mitramandiri.backend.entities.Employee;
 import com.mitramandiri.backend.entities.Position;
 import com.mitramandiri.backend.models.EmployeeRequest;
+import com.mitramandiri.backend.models.PageList;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,17 +32,33 @@ public class EmployeeDAOImpl implements EmployeeDao {
 
     @Override
     @Transactional
-    public List<Employee> getListForPagination(EmployeeRequest employeeRequest) {
+    public PageList<Employee> getListForPagination(EmployeeRequest employeeRequest) {
         Session currentSession = entityManager.unwrap(Session.class);
 
-        //create a query
-        //using native Hibernate API
-        Query<Employee> query = currentSession.createQuery("FROM Employee e where e.isDeleted = false ", Employee.class);
 
-        //execute query and get result list
+        Query<Employee> query = currentSession.createQuery("FROM Employee e where (e.isDeleted = false) AND " +
+                "(:name is null OR e.name LIKE CONCAT('%',:name,'%')) AND " +
+                "(:idNumber is null OR e.idNumber LIKE CONCAT('%',:idNumber,'%')) AND " +
+                "(:gender is null OR e.gender LIKE CONCAT('%',:gender,'%')) AND " +
+                "(:birthDate is null OR e.birthDate LIKE CONCAT('%',:birthDate,'%')) ", Employee.class);
+
+        query.setParameter("name", employeeRequest.getName());
+        query.setParameter("idNumber", employeeRequest.getIdNumber());
+        query.setParameter("birthDate", employeeRequest.getBirthDate());
+        query.setParameter("gender", employeeRequest.getGender());
+
+        long total = query.getResultList().size();
+
+        query.setFirstResult(employeeRequest.getPage());
+        query.setMaxResults(employeeRequest.getSize());
+
+        int size = query.getMaxResults();
+        int page = query.getFirstResult();
+
         List<Employee> employees = query.getResultList();
+        PageList<Employee> pageList = new PageList<Employee>(employees, page, size, total);
 
-        return employees;
+        return pageList;
     }
 
     @Override

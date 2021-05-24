@@ -4,6 +4,7 @@ package com.mitramandiri.backend.controllers;
 import com.mitramandiri.backend.entities.Employee;
 import com.mitramandiri.backend.entities.Position;
 import com.mitramandiri.backend.models.EmployeeRequest;
+import com.mitramandiri.backend.models.PageList;
 import com.mitramandiri.backend.models.ResponseMessage;
 import com.mitramandiri.backend.services.EmployeeService;
 import com.mitramandiri.backend.services.PositionService;
@@ -28,11 +29,11 @@ public class EmployeeController {
     PositionService positionService;
 
     @GetMapping("/employees")
-    public ResponseMessage<List<Employee>> findAllWithPagination(
+    public ResponseMessage<?> findAllWithPagination(
             EmployeeRequest request
     ) {
 
-        List<Employee> employees = employeeService.findAllListForPagination(request);
+        PageList <Employee> employees = employeeService.findAllListForPagination(request);
 
         return ResponseMessage.success(employees);
     }
